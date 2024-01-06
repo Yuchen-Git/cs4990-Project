@@ -3,12 +3,14 @@ from mysql.connector import Error
 
 class Mysql_Method_Api:
     #initialize the object
-    def __init__(self, host, user, password, db=None):
+    def __init__(self, host, user, password, database_name, db=None):
         self.host = host
         self.user = user
         self.password = password
         self.db = db
-    #create connection to the database
+        #create connection to the database
+        if self.create_connection():
+            self.create_database(database_name)
     def create_connection(self,db_name=None):
         try:
             if db_name:
@@ -40,89 +42,51 @@ class Mysql_Method_Api:
             print(f"database {database_name} has created or already exist")
         except Error as e:
             print(f"Error creating database: {e}")
-            
-    #create tables if not exist
-    # def create_tables(self, db_name):
-    #     try:
-    #         cursor = self.connection.cursor()
-    #         cursor.execute(f"USE {db_name}")
-    #         cursor.execute("CREATE TABLE IF NOT EXISTS guest (guest_id INT AUTO_INCREMENT PRIMARY KEY, guestname VARCHAR(255), number_of_guest INT, email VARCHAR(255), Reservation_date DATE, Reservation_time TIME, phone VARCHAR(255)))")
-    #         cursor.execute("CREATE TABLE IF NOT EXISTS table (table_id INT AUTO_INCREMENT PRIMARY KEY, guest_id INT, number_of_guest INT(255), Reservation_date DATE, Reservation_time TIME, guestname VARCHAR(255), FOREIGN KEY (user_id) REFERENCES guest(user_id), FOREIGN KEY (guestname) REFERENCES guest(guestname), FOREIGN KEY (Reservation_time) REFERENCES guest(Reservation_time) FOREIGN KEY (Reservation_date) REFERENCES guest(Reservation_date), FOREIGN KEY (number_of_guest) REFERENCES guest(number_of_guest))")
-    #         cursor.execute("CREATE TABLE IF NOT EXISTS reservations (reservation_id INT AUTO_INCREMENT PRIMARY KEY, user_id INT, guestname VARCHAR(255), number_of_guest INT(255), table_id INT, email VARCHAR(255), Reservation_date DATE, FOREIGN KEY (Reservation_date) REFERENCES table(Reservation_date)FOREIGN KEY (email) REFERENCES guest(email), FOREIGN KEY (number_of_guest) REFERENCES table(number_of_guest), FOREIGN KEY (guestname) REFERENCES table(guestname), FOREIGN KEY (user_id) REFERENCES table(user_id), FOREIGN KEY (table_id) REFERENCES table(table_id))")
-    #         print(f"tables has created or already exist")
-    #     except Error as e:
-    #         print(f"Error creating tables: {e}")
-    def create_tables(self, db_name):
+
+    def create_Reservation_tables(self, db_name):
         try:
             cursor = self.connection.cursor()
             cursor.execute(f"USE {db_name}")
-
-            # Create guest table
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS guest (
-                    guest_id INT AUTO_INCREMENT PRIMARY KEY,
-                    guestname VARCHAR(255),
-                    number_of_guests INT,
-                    email VARCHAR(255),
-                    reservation_date DATE,
-                    reservation_time TIME,
-                    phone VARCHAR(255)
-                )
-            """)
-
-            # Create dining_table (formerly 'table') table
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS dining_table (
-                    table_id INT AUTO_INCREMENT PRIMARY KEY,
-                    guest_id INT,
-                    number_of_guests INT,
-                    guestname VARCHAR(255)
-                    FOREIGN KEY (guest_id) REFERENCES guest(guest_id),
-                    FOREIGN KEY (number_of_guests) REFERENCES guest(number_of_guests),
-                    FOREIGN KEY (guestname) REFERENCES guest(guestname),
-
-
-                )
-            """)
-
             # Create reservations table
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS reservations (
-                    reservation_id INT AUTO_INCREMENT PRIMARY KEY,
-                    guest_id INT,
-                    number_of_guests INT,
-                    table_id INT,
+                    phone_number VARCHAR(255),
+                    guest_name VARCHAR(255),
+                    num_of_guest INT,
                     reservation_date DATE,
                     reservation_time TIME,
-                    FOREIGN KEY (guest_id) REFERENCES guest(guest_id),
-                    FOREIGN KEY (table_id) REFERENCES dining_table(table_id),
-                    FOREIGN KEY (reservation_time) REFERENCES guest(reservation_time),
-                    FOREIGN KEY (reservation_date) REFERENCES guest(reservation_date),
+                    table_id INT,
+                    PRIMARY KEY(phone_number),
+                    FOREIGN KEY(table_id) REFERENCES tables(table_unique_ID)
                 )
             """)
 
             print("Tables have been created or already exist")
         except Error as e:
             print(f"Error creating tables: {e}")
+    #initialize tables then insert default value, and commit changes then close the cursor
+    def initialize_tables(self, db_name,size_of_each_table,num_of_tables):
+        cursor = self.connection.cursor()
+        cursor.execute(f"USE {db_name}")
+        #create table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS tables (
+            table_unique_ID INT AUTO_INCREMENT PRIMARY KEY,
+            table_size VARCHAR(255),
+            num_of_guest INT,
+            is_Available BOOLEAN
+            );
+       """)
+        self.insert_table(size_of_each_table,num_of_tables)
+        #commit changes after insertion
+        self.connection.commit()
 
-    #insert data into the table for guest
-    def insert_guest(self, guestname, number_of_guest, password, email, Reservation_date, Reservation_time, phone):
-        try:
-            cursor = self.connection.cursor()
-            cursor.execute(f"INSERT INTO guest (guestname, number_of_guest, password, email, Reservation_date, Reservation_time, phone) VALUES ('{guestname}', '{number_of_guest}', '{password}', '{email}', '{Reservation_date}', '{Reservation_time}', '{phone}')")
-            self.connection.commit()
-            print(f"guest {guestname} has been added")
-        except Error as e:
-            print(f"Error inserting guest: {e}")
-    # insert data into the table for table
-    def insert_table(self, number_of_guest, Reservation_date, Reservation_time, guestname):
-        try:
-            cursor = self.connection.cursor()
-            cursor.execute(f"INSERT INTO table (number_of_guest, Reservation_date, Reservation_time, guestname) VALUES ('{number_of_guest}', '{Reservation_date}', '{Reservation_time}', '{guestname}')")
-            self.connection.commit()
-            print(f"table has been added")
-        except Error as e:
-            print(f"Error inserting table: {e}")
-    
-    
-    
+    #internal called def that insert default value to the table
+    def insert_table(self, size_of_each_table,num_of_tables):
+        cursor = self.connection.cursor()
+        for i in range(num_of_tables):
+            cursor.execute("""
+            INSERT INTO tables (table_size, is_Available)
+            VALUES (%s, %s)
+            """,(size_of_each_table, True))
+
