@@ -26,6 +26,7 @@ class Mysql_Method_Api:
                     user=self.user,
                     password=self.password
                 )
+            self.connection.cursor().execute(f"USE {db_name}")
             return True
         except Error as e:
             print(f"database connected error...")
@@ -105,7 +106,9 @@ class Mysql_Method_Api:
         """make reservation,  first check if there exist a reservation, if not, then create a new also update the table status"""
         try:
             cursor = self.connection.cursor()
-            # check whethere already have reservation
+            # check whether already have reservation
+            cursor.execute("USE reservation_sys_db")
+
             cursor.execute("SELECT reservation_time, reservation_date FROM reservations WHERE phone_number = %s",
                            (guest_phone_number,))
             existing_reservation = cursor.fetchone()
@@ -158,6 +161,7 @@ class Mysql_Method_Api:
         """Cancels a reservation based on the phone number."""
         try:
             cursor = self.connection.cursor()
+            cursor.execute("USE reservation_sys_db")
             # Check if the reservation exists
             cursor.execute("SELECT * FROM reservations WHERE phone_number = %s", (phone_number,))
             reservation = cursor.fetchone()
@@ -174,8 +178,10 @@ class Mysql_Method_Api:
                 # Commit the transaction
                 self.connection.commit()
                 print(f"Reservation for phone number {phone_number} has been cancelled.")
+                return True
             else:
                 print("No matching reservation found.")
+                return False
         except Exception as e:
             # Rollback the transaction in case of any error
             self.connection.rollback()
