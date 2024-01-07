@@ -11,7 +11,7 @@ load_dotenv()
 db_host = os.getenv('DB_HOST')
 db_user = os.getenv('DB_USER')
 db_password = os.getenv('DB_PASSWORD')
-db_name = os.getenv('DB_NAME')
+db_name = "reservation_sys_db"
 
 # Initialize the database connection
 db = Mysql_Method_Api(db_host, db_user, db_password, db_name)
@@ -33,7 +33,13 @@ app = FastAPI()
 
 @app.post("/make_reservation/")
 def make_reservation(reservation: Reservation):
-    result = db.make_reservations(reservation.guest_phone_number, reservation.guest_name, reservation.num_of_guest, reservation.reservation_date, reservation.reservation_time, reservation.table_unique_ID)
+    result = db.make_reservations(
+        reservation.guest_phone_number,
+        reservation.guest_name,
+        reservation.num_of_guest,
+        reservation.reservation_date,
+        reservation.reservation_time,
+        reservation.table_unique_ID)
     if result:
         return {"message": "Reservation successful"}
     else:
