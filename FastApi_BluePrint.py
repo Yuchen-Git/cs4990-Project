@@ -13,8 +13,14 @@ db_user = os.getenv('DB_USER')
 db_password = os.getenv('DB_PASSWORD')
 db_name = "reservation_sys_db"
 
+# table default info
+size_of_table = 10
+number_of_tables = 10
+table_name = "tables"
+
 # Initialize the database connection
-db = Mysql_Method_Api(db_host, db_user, db_password, db_name)
+db = Mysql_Method_Api(db_host, db_user, db_password, db_name, size_of_table, number_of_tables, table_name)
+
 
 # Define data models for FastAPI
 class Reservation(BaseModel):
