@@ -1,24 +1,22 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from database_management import Mysql_Method_Api
+from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
-load_dotenv()  # This is to load the environment variables from the .env file
 
+# Load environment variables
+load_dotenv()
 
-# 创建 FastAPI 实例
-app = FastAPI()
-
-# 加载环境变量
+# Environment variables
 db_host = os.getenv('DB_HOST')
 db_user = os.getenv('DB_USER')
 db_password = os.getenv('DB_PASSWORD')
-db_name = os.getenv('DB_NAME')
+db_name = "reservation_sys_db"
 
-# 创建数据库管理实例
-db_manager = Mysql_Method_Api(db_host, db_user, db_password, db_name)
+# Initialize the database connection
+db = Mysql_Method_Api(db_host, db_user, db_password, db_name)
 
-# 预订模型
+# Define data models for FastAPI
 class Reservation(BaseModel):
     guest_phone_number: str
     guest_name: str
@@ -27,40 +25,38 @@ class Reservation(BaseModel):
     reservation_time: str
     table_unique_ID: int
 
-# 创建预订路由
-@app.post("/reservations/")
+class CancelReservation(BaseModel):
+    phone_number: str
+
+# Create FastAPI app
+app = FastAPI()
+
+@app.post("/make_reservation/")
 def make_reservation(reservation: Reservation):
-    result = db_manager.make_reservations(
-        reservation.guest_phone_number, reservation.guest_name,
-        reservation.num_of_guest, reservation.reservation_date,
-        reservation.reservation_time, reservation.table_unique_ID
-    )
+    result = db.make_reservations(
+        reservation.guest_phone_number,
+        reservation.guest_name,
+        reservation.num_of_guest,
+        reservation.reservation_date,
+        reservation.reservation_time,
+        reservation.table_unique_ID)
     if result:
         return {"message": "Reservation successful"}
     else:
-        raise HTTPException(status_code=400, detail="Error in reservation")
+        raise HTTPException(status_code=400, detail="Reservation failed")
 
-# 取消预订路由
-@app.delete("/reservations/{phone_number}")
-def cancel_reservation(phone_number: str):
-    db_manager.cancel_reservation_by_phone_number(phone_number)
-    return {"message": "Reservation cancelled"}
-
-# 获取可用桌子路由
-@app.get("/tables/available")
-def get_available_tables():
-    available_tables = db_manager.check_available_tables()
-    if available_tables:
-        return {"tables": available_tables}
+@app.delete("/cancel_reservation/")
+def cancel_reservation(cancel: CancelReservation):
+    result = db.cancel_reservation_by_phone_number(cancel.phone_number)
+    if result:
+        return {"message": "Reservation cancelled"}
     else:
-        raise HTTPException(status_code=404, detail="No available tables")
+        raise HTTPException(status_code=404, detail="Reservation not found")
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the Reservation System API"}
-
-
-# 运行 FastAPI 服务器
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="192.168.4.0", port=8000)
+@app.get("/check_available_tables/")
+def check_available_tables():
+    available_tables = db.check_available_tables()
+    if available_tables:
+        return {"available_tables": available_tables}
+    else:
+        return {"message": "No tables available"}
