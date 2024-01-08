@@ -3,6 +3,16 @@ from database_management import Mysql_Method_Api
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
+import fastapi.middleware.cors as CORS
+
+app = FastAPI()
+app.add_middleware(
+    CORS.CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=True,
+)
 
 # Load environment variables
 load_dotenv()
@@ -33,9 +43,6 @@ class Reservation(BaseModel):
 
 class CancelReservation(BaseModel):
     phone_number: str
-
-# Create FastAPI app
-app = FastAPI()
 
 @app.post("/make_reservation/")
 def make_reservation(reservation: Reservation):
