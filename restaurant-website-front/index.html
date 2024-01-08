@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+<link rel="stylesheet" href="style.css">
+
+<!--------------------Jquery Cdn--------->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--------------------Jquery Cdn--------->
+
+<!-----------------------Bootstrap CDN fo jquery,popper and js--------------->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-----------------------Bootstrap CDN fo jquery,popper and js--------------->
+
+<!------------------LIght BOx for Gallery-------------->
+<link rel="stylesheet" href="lightbox.min.css">
+<script type="text/javascript" src="lightbox-plus-jquery.min.js"></script>
+<!------------------LIght BOx for Gallery-------------->
+
+<!-------------------------Flickity For Slider------->
+<link rel="stylesheet" href="https://npmcdn.com/flickity@1.2/dist/flickity.min.css">
+<script src="https://npmcdn.com/flickity@1.2/dist/flickity.pkgd.min.js"></script>
+
+<!-------------------------Flickity For Slider------->
+S<title>Touche Cafe & Resturant</title>
+</head>
+<body>
+    <section class="Reserv padding" style="background-color:#F0F0F0">
+    <div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="reserve-title text-center">
+                <h3 class="my-4">Make online reservation</h3>
+            </div>
+            </div>
+    <div class="col-sm-6 col-xs-12">
+        <div class="reserv-form">
+        <form id="personalInfo" action="index.php">
+            <input type="text" name="Full name" id="name" class="form-control mb-4 form-control-lg" placeholder="Full name">
+            <input type="text" name="Phone" id="phone" class="form-control mb-4 form-control-lg" placeholder="Phone number">
+        </form>
+        </div>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+        <div class="reserv-form">
+        <form id="personsDate" action="index.php">
+        <select name="select" id="select-option" class="custom-select custom-select-lg mb-4">
+            <option value="1">1 Persons</option>
+            <option value="2">2 Persons</option>
+            <option value="3">3 Persons</option>
+        </select>
+        <input type="date" name="date" id="date" class="form-control form-control-lg mb-4">
+        <input type="time" name="time" id="time" class="form-control form-control-lg mb-4">
+        </form>
+        </div>
+        </div>
+        </div>
+        <button  type="button" class="btn btn-outline-warning btn-lg mx-auto d-block" onclick="reserveTable()" >RESERVE TABLE</button>
+        <button class= "btn btn-outline-warning btn-lg mx-auto d-block" type="button" id="cancelButton" onclick="cancelReservation()">Cancel</button>
+        </div>
+    </section>
+    <script src="script.js"></script>
+<!---------------------------------Flickity 2 Section------------>
+</body>
+</html>
