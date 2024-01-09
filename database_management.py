@@ -3,14 +3,15 @@ from mysql.connector import Error
 
 class Mysql_Method_Api:
     #initialize the object
-    def __init__(self, host, user, password, database_name, db=None):
+    def __init__(self, host, user, password, database_name, size_of_table, number_of_tables, table_name):
         self.host = host
         self.user = user
         self.password = password
-        self.db = db
         #create connection to the database
         if self.create_connection():
             self.create_database(database_name)
+            self.initialize_tables(database_name, size_of_table, number_of_tables, table_name)
+            self.create_Reservation_tables(database_name)
     def create_connection(self,db_name=None):
         try:
             if db_name:
@@ -26,7 +27,7 @@ class Mysql_Method_Api:
                     user=self.user,
                     password=self.password
                 )
-            self.connection.cursor().execute(f"USE {db_name}")
+            #self.connection.cursor().execute(f"USE {db_name}")
             return True
         except Error as e:
             print(f"database connected error...")
@@ -41,8 +42,10 @@ class Mysql_Method_Api:
             cursor = self.connection.cursor()
             cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database_name}")
             print(f"database {database_name} has created or already exist")
+            #return True
         except Error as e:
             print(f"Error creating database: {e}")
+            #return False
 
     def create_Reservation_tables(self, db_name):
         try:
@@ -89,18 +92,29 @@ class Mysql_Method_Api:
                 is_Available BOOLEAN
                 );
             """)
-
-            self.insert_table(size_of_each_table, num_of_tables)
+        if self.is_table_empty(table_name):
+            self.insert_table(size_of_each_table, num_of_tables,)
             self.connection.commit()
+
+    def is_table_empty(self, table_name):
+
+        cursor = self.connection.cursor()
+        cursor.execute("USE reservation_sys_db")
+
+        query = f"SELECT COUNT(*) FROM {table_name}"
+        cursor.execute(query)
+        count = cursor.fetchone()[0]
+        cursor.close()
+        return count == 0
 
     #internal called def that insert default value to the table
     def insert_table(self, size_of_each_table,num_of_tables):
         cursor = self.connection.cursor()
         for i in range(num_of_tables):
             cursor.execute("""
-            INSERT INTO tables (table_size, is_Available)
-            VALUES (%s, %s)
-            """,(size_of_each_table, True))
+            INSERT INTO tables (table_size, is_Available, num_of_guest )
+            VALUES (%s, %s, %s)
+            """,(size_of_each_table, True , 0))
 
     def make_reservations(self, guest_phone_number, guest_name, num_of_guest, reservation_date, reservation_time, table_unique_ID):
         """make reservation,  first check if there exist a reservation, if not, then create a new also update the table status"""

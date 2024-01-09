@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Form</title>
+</head>
+<body>
+    <h1>Make a Reservation</h1>
+    <form id="reservationForm">
+        <label for="guestPhoneNumber">Guest Phone Number:</label><br>
+        <input type="text" id="guestPhoneNumber" name="guest_phone_number" required><br><br>
+
+        <label for="guestName">Guest Name:</label><br>
+        <input type="text" id="guestName" name="guest_name" required><br><br>
+
+        <label for="numOfGuest">Number of Guests:</label><br>
+        <input type="number" id="numOfGuest" name="num_of_guest" required min="1"><br><br>
+
+        <label for="reservationDate">Reservation Date:</label><br>
+        <input type="date" id="reservationDate" name="reservation_date" required><br><br>
+
+        <label for="reservationTime">Reservation Time:</label><br>
+        <input type="time" id="reservationTime" name="reservation_time" required><br><br>
+
+        <label for="tableUniqueID">Table Unique ID:</label><br>
+        <input type="number" id="tableUniqueID" name="table_unique_ID" required min="1"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.getElementById("reservationForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            let formData = {
+                guest_phone_number: document.getElementById("guestPhoneNumber").value,
+                guest_name: document.getElementById("guestName").value,
+                num_of_guest: document.getElementById("numOfGuest").value,
+                reservation_date: document.getElementById("reservationDate").value,
+                reservation_time: document.getElementById("reservationTime").value,
+                table_unique_ID: document.getElementById("tableUniqueID").value
+            };
+
+            try {
+                let response = await fetch('http://3.13.33.3:8000/make_reservation/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                } else {
+                    let result = await response.json();
+                    console.log(result);
+                    alert("Reservation successful!");
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Failed to make reservation.");
+            }
+        });
+    </script>
+</body>
+</html>
