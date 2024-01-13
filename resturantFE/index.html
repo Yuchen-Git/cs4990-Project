@@ -30,6 +30,13 @@
         <input type="submit" value="Submit">
     </form>
 
+     <h2>Cancel a Reservation</h2>
+    <form id="cancelReservationForm">
+        <label for="cancelGuestPhoneNumber">Guest Phone Number:</label><br>
+        <input type="text" id="cancelGuestPhoneNumber" name="cancel_guest_phone_number" required><br><br>
+        <input type="submit" value="Cancel Reservation">
+    </form>
+
     <script>
         document.getElementById("reservationForm").addEventListener("submit", async function(event) {
             event.preventDefault();
@@ -62,6 +69,33 @@
             } catch (error) {
                 console.error('Error:', error);
                 alert("Failed to make reservation.");
+            }
+        });
+
+        document.getElementById("cancelReservationForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            let phoneNumber = document.getElementById("cancelGuestPhoneNumber").value;
+
+            try {
+                let response = await fetch('http://3.13.33.3:8000/cancel_reservation/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({guest_phone_number: phoneNumber})
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                } else {
+                    let result = await response.json();
+                    console.log(result);
+                    alert("Reservation cancelled successfully!");
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Failed to cancel reservation.");
             }
         });
     </script>
