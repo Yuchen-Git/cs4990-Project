@@ -1,71 +1,261 @@
-/* Basic Reset */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+@import url("https://fonts.googleapis.com/css?family=Oswald:400,500,600,700");
+
+p {
+  font-size: 18px;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #fff3e0;
-    line-height: 1.6;
-    padding: 20px;
-    color: #333;
+.padding {
+  padding: 60px;
+}
+.banner {
+  position: relative;
+  background: url(img/two.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  max-width: 100%;
+  height: 800px;
+  background-attachment: fixed;
+}
+.banner-social,
+.banner-address {
+  position: absolute;
+  top: 50%;
+  transform: translateY(700px);
+  color: white;
 }
 
-h1 {
-    color: #795548;
-    text-align: center;
-    margin-bottom: 40px;
-    font-size: 2.5em;
+.banner-middle {
+  position: absolute;
+  transform: translate(250px, 230px);
+
+  color: white;
+}
+
+.banner-two {
+  background: url(img/topmusic.jpg);
+  background-size: cover;
+  max-width: 100%;
+  height: 592px;
+  background-attachment: fixed;
+}
+
+.menu-link {
+  margin-bottom: 60px;
+}
+
+@media (max-width: 992px) {
+  .banner-middle {
+    position: absolute;
+    transform: translate(40px, 230px);
+
+    color: white;
+  }
+}
+
+@media (max-width: 762px) {
+  .banner-middle {
+    position: absolute;
+    transform: translate(0px, 230px);
+
+    color: white;
+  }
+}
+
+.active1 {
+  background-color: yellow;
+}
+
+/*------------------------Flickity Style-------------------------------------*/
+
+.carousel-cell {
+  width: 25%;
+  margin-right: 7px;
+  height: 255px;
+}
+
+.carousel-cell-image {
+  display: block;
+  border-radius: 6px;
+}
+
+.img1 {
+  background: url(img/dish1.jpg);
+  background-size: cover;
+  max-width: 100%;
+  height: 255px;
+  border-radius: 6px;
+  position: relative;
+}
+.img2 {
+  background: url(img/dish2.jpg);
+  background-size: cover;
+  max-width: 100%;
+  height: 255px;
+  border-radius: 6px;
+}
+.img3 {
+  background: url(img/dish3.jpg);
+  background-size: cover;
+  max-width: 100%;
+  height: 255px;
+  border-radius: 6px;
+}
+
+.img4 {
+  background: url(img/dish4.jpg);
+  background-size: cover;
+  max-width: 100%;
+  height: 255px;
+  border-radius: 6px;
+}
+
+.fli-p {
+  position: relative;
+  font-size: 25px;
+  font-weight: 700px;
+  font-family: "Oswald", sans-serif;
+
+  position: relative;
+  color: white;
+  top: 170px;
+  left: 10px;
+}
+
+.fli-p-d {
+  position: relative;
+  font-size: 25px;
+  font-weight: 700px;
+  position: relative;
+  color: white;
+  top: 170px;
+  right: 30px;
+  font-family: "Oswald", sans-serif;
+}
+.carousel-cell:hover {
+  opacity: 0.8;
+  transition: 0.5s ease;
+  cursor: pointer;
+}
+.flickity-prev-next-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  background: #333;
+}
+
+/*----------------------------Flickity two Style------------------*/
+
+.carousel-cellx {
+  width: 100%;
+}
+/*--------------------------------------*/
+
+.event-img {
+  background: url(img/music.jpg);
+  background-size: cover;
+  height: 606px;
+  max-width: 100%;
+}
+
+.below {
+  background-color: #150f0a;
+  position: relative;
+  transform: translateY(-5px);
+  padding: 50px;
+}
+
+footer p {
+  color: #775b3f;
+  font-size: 14px;
+}
+.gallery-top {
+  margin-bottom: 70px;
+}
+.gallery-title h3 {
+  font-size: 44px;
+  padding: 4px;
+}
+.gallery-title p {
+  font-size: 15px;
+}
+.news {
+  background-color: #f0f0f0;
+}
+
+.fa-facebook,
+.fa-instagram,
+.fa-twitter {
+  font-size: 20px;
+  padding: 10px;
+}
+.fa-facebook:hover,
+.fa-instagram:hover,
+.fa-twitter:hover {
+  transform: scale(1.8);
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.navbar-toggler-icon {
+  border-radius: 5;
+  background-color: transparent !important ;
+}
+
+.glass-one:before {
+  display: block;
+  width: 30px;
+  margin: 10px 15px;
+  content: "";
+  border-top: 3px solid #f5a637;
 }
 
 form {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    margin: 10px 10px auto;
-    border: 1px solid #ddd;
-    margin-bottom: 50px;
+  background: #ffffff;
+  padding: 30px;
+  justify-content: center;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 10px 10px auto;
+  border: 1px solid #ddd;
+  margin-bottom: 50px;
 }
 
 label {
-    display: block;
-    margin-bottom: 10px;
-    color: #555;
-    font-size: 1.1em;
+  display: block;
+  margin-bottom: 10px;
+  color: #555;
+  font-size: 1.1em;
 }
 
 input[type="text"],
 input[type="number"],
 input[type="date"],
 input[type="time"] {
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 25px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1.1em;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1.1em;
 }
 
 input[type="submit"] {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    background-color: #619228;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.2em;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: #619228;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2em;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 input[type="submit"]:hover {
-    background-color: #7cb342;
+  background-color: #7cb342;
 }
 
 /* Adding a hover effect to input fields */
@@ -73,20 +263,5 @@ input[type="text"]:hover,
 input[type="number"]:hover,
 input[type="date"]:hover,
 input[type="time"]:hover {
-    border-color: #8bc34a;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    body {
-        padding: 15px;
-    }
-
-    form {
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 2em;
-    }
+  border-color: #8bc34a;
 }
