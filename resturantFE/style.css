@@ -39,11 +39,7 @@ p {
   background-attachment: fixed;
 }
 
-.menu-link {
-  margin-bottom: 60px;
-}
-
-@media (max-width: 992px) {
+@media (min-width: 1200px) {
   .banner-middle {
     position: absolute;
     transform: translate(40px, 230px);
@@ -52,7 +48,7 @@ p {
   }
 }
 
-@media (max-width: 762px) {
+@media (min-width: 762px) {
   .banner-middle {
     position: absolute;
     transform: translate(0px, 230px);
@@ -150,13 +146,6 @@ p {
 }
 /*--------------------------------------*/
 
-.event-img {
-  background: url(img/music.jpg);
-  background-size: cover;
-  height: 606px;
-  max-width: 100%;
-}
-
 .below {
   background-color: #150f0a;
   position: relative;
@@ -209,16 +198,19 @@ footer p {
   border-top: 3px solid #f5a637;
 }
 
+/*----------------------------Form------------------*/
+
 form {
   background: #ffffff;
   padding: 30px;
-  justify-content: center;
+  align-items: center;
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   max-width: 500px;
-  margin: 10px 10px auto;
+  margin: 10px auto; /* Updated margin */
   border: 1px solid #ddd;
   margin-bottom: 50px;
+  height: 100%;
 }
 
 label {
@@ -244,7 +236,7 @@ input[type="submit"] {
   display: block;
   width: 100%;
   padding: 15px;
-  background-color: #619228;
+  background-color: #ffc107;
   color: white;
   border: none;
   border-radius: 5px;
@@ -255,7 +247,7 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-  background-color: #7cb342;
+  background-color: #ffc107;
 }
 
 /* Adding a hover effect to input fields */
